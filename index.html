@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Prueba global interactiva de Farmacología organizada por las nueve clases estudiadas."
+    />
+    <meta name="theme-color" content="#15252d" />
+    <title>Prueba global de Farmacología</title>
+    <link rel="icon" href="assets/pharmacology-study.png" type="image/png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <button class="brand" id="home-button" type="button" aria-label="Volver al inicio">
+          <span class="brand-mark" aria-hidden="true"><i data-lucide="pill"></i></span>
+          <span>
+            <strong>Farmacología</strong>
+            <small>Preparación global UOH</small>
+          </span>
+        </button>
+        <div class="topbar-actions">
+          <button class="icon-button" id="open-progress" type="button" title="Ver progreso" aria-label="Ver progreso">
+            <i data-lucide="chart-no-axes-column-increasing"></i>
+          </button>
+          <button class="icon-button" id="open-settings" type="button" title="Opciones" aria-label="Abrir opciones">
+            <i data-lucide="settings-2"></i>
+          </button>
+        </div>
+      </header>
+
+      <main id="app" tabindex="-1">
+        <section class="screen setup-screen" id="setup-screen">
+          <div class="study-banner">
+            <div class="banner-copy">
+              <span class="eyebrow">Banco completo por clase</span>
+              <h1>Prueba global de Farmacología</h1>
+              <p>
+                Practica con 135 preguntas del material estudiado. Las alternativas cambian de orden en cada intento.
+              </p>
+              <div class="banner-facts" aria-label="Características del banco">
+                <span><i data-lucide="layers-3"></i> 9 clases</span>
+                <span><i data-lucide="list-checks"></i> 135 preguntas</span>
+                <span><i data-lucide="smartphone"></i> Optimizado para celular</span>
+              </div>
+            </div>
+            <img
+              class="banner-visual"
+              src="assets/pharmacology-study.png"
+              alt="Cápsula, receptor, membrana, ADN y curva dosis-respuesta"
+            />
+          </div>
+
+          <div class="resume-banner" id="resume-banner" hidden>
+            <div>
+              <strong>Tienes un intento en curso</strong>
+              <span id="resume-copy"></span>
+            </div>
+            <div class="resume-actions">
+              <button class="button secondary" id="discard-session" type="button">Descartar</button>
+              <button class="button primary" id="resume-session" type="button">
+                Continuar <i data-lucide="arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <section class="stats-strip" aria-label="Resumen de progreso">
+            <article>
+              <i data-lucide="circle-check-big"></i>
+              <div><strong id="stat-answered">0</strong><span>respondidas</span></div>
+            </article>
+            <article>
+              <i data-lucide="target"></i>
+              <div><strong id="stat-accuracy">0%</strong><span>precisión</span></div>
+            </article>
+            <article>
+              <i data-lucide="rotate-ccw"></i>
+              <div><strong id="stat-pending">0</strong><span>errores por repasar</span></div>
+            </article>
+          </section>
+
+          <div class="setup-layout">
+            <section class="panel classes-panel">
+              <div class="section-heading">
+                <div>
+                  <span class="eyebrow">Contenido</span>
+                  <h2>Selecciona las clases</h2>
+                </div>
+                <div class="inline-actions">
+                  <button class="text-button" id="select-all" type="button">Todas</button>
+                  <button class="text-button" id="select-none" type="button">Ninguna</button>
+                </div>
+              </div>
+              <div class="class-grid" id="class-grid"></div>
+            </section>
+
+            <aside class="panel configuration-panel">
+              <div class="section-heading compact">
+                <div>
+                  <span class="eyebrow">Configuración</span>
+                  <h2>Arma tu prueba</h2>
+                </div>
+              </div>
+
+              <fieldset class="control-group">
+                <legend>Modo</legend>
+                <div class="segmented" id="mode-control">
+                  <button class="segment active" type="button" data-value="practice" aria-pressed="true">
+                    <i data-lucide="graduation-cap"></i> Práctica
+                  </button>
+                  <button class="segment" type="button" data-value="exam" aria-pressed="false">
+                    <i data-lucide="timer"></i> Simulación
+                  </button>
+                </div>
+                <p class="control-help" id="mode-help">Corrección y explicación después de cada respuesta.</p>
+              </fieldset>
+
+              <fieldset class="control-group">
+                <legend>Cantidad</legend>
+                <div class="count-options" id="count-control">
+                  <button type="button" data-value="18">18</button>
+                  <button type="button" data-value="45" class="active">45</button>
+                  <button type="button" data-value="90">90</button>
+                  <button type="button" data-value="135">Todas</button>
+                </div>
+              </fieldset>
+
+              <fieldset class="control-group">
+                <legend>Orden</legend>
+                <div class="segmented" id="order-control">
+                  <button class="segment active" type="button" data-value="class" aria-pressed="true">
+                    Por clase
+                  </button>
+                  <button class="segment" type="button" data-value="mixed" aria-pressed="false">
+                    Mezclado
+                  </button>
+                </div>
+              </fieldset>
+
+              <fieldset class="control-group">
+                <legend>Dificultad</legend>
+                <div class="difficulty-options" id="difficulty-control">
+                  <label><input type="checkbox" value="easy" checked /> Fácil</label>
+                  <label><input type="checkbox" value="medium" checked /> Intermedia</label>
+                  <label><input type="checkbox" value="hard" checked /> Difícil</label>
+                </div>
+              </fieldset>
+
+              <div class="configuration-summary" id="configuration-summary"></div>
+
+              <button class="button primary start-button" id="start-quiz" type="button">
+                <i data-lucide="play"></i> Comenzar prueba
+              </button>
+              <button class="button secondary review-button" id="review-errors" type="button" disabled>
+                <i data-lucide="rotate-ccw"></i> Repasar errores
+              </button>
+            </aside>
+          </div>
+
+          <p class="source-note">
+            Banco construido desde las guías de las clases entregadas. Los contenidos legales, dosis y protocolos se estudian
+            según el material de la asignatura.
+          </p>
+        </section>
+
+        <section class="screen quiz-screen" id="quiz-screen" hidden>
+          <div class="quiz-toolbar">
+            <button class="icon-button back-button" id="exit-quiz" type="button" aria-label="Salir de la prueba" title="Salir">
+              <i data-lucide="x"></i>
+            </button>
+            <div class="quiz-progress-wrap">
+              <div class="quiz-progress-copy">
+                <span id="quiz-position">Pregunta 1 de 45</span>
+                <span id="quiz-section">Clase 1</span>
+              </div>
+              <div class="progress-track"><span id="quiz-progress-bar"></span></div>
+            </div>
+            <div class="timer-box" id="timer-box">
+              <i data-lucide="clock-3"></i><span id="timer">00:00</span>
+            </div>
+          </div>
+
+          <article class="question-surface" id="question-surface">
+            <div class="question-meta">
+              <span class="class-chip" id="question-class"></span>
+              <span class="difficulty-chip" id="question-difficulty"></span>
+            </div>
+            <h2 id="question-text"></h2>
+            <div class="answer-list" id="answer-list" role="radiogroup" aria-label="Alternativas"></div>
+
+            <div class="feedback" id="feedback" hidden aria-live="polite">
+              <div class="feedback-title" id="feedback-title"></div>
+              <p id="feedback-text"></p>
+            </div>
+          </article>
+
+          <div class="quiz-navigation">
+            <button class="button secondary" id="previous-question" type="button">
+              <i data-lucide="chevron-left"></i> Anterior
+            </button>
+            <button class="icon-text-button" id="flag-question" type="button" aria-pressed="false">
+              <i data-lucide="flag"></i><span>Marcar</span>
+            </button>
+            <button class="button primary" id="next-question" type="button">
+              Siguiente <i data-lucide="chevron-right"></i>
+            </button>
+          </div>
+        </section>
+
+        <section class="screen results-screen" id="results-screen" hidden>
+          <div class="results-header">
+            <span class="eyebrow">Resultado global</span>
+            <h1 id="result-title">Resultado</h1>
+            <p id="result-summary"></p>
+          </div>
+
+          <div class="result-overview">
+            <div class="score-ring" id="score-ring" aria-label="Porcentaje de respuestas correctas">
+              <strong id="score-percent">0%</strong>
+              <span>correctas</span>
+            </div>
+            <div class="result-metrics">
+              <article><strong id="result-correct">0</strong><span>correctas</span></article>
+              <article><strong id="result-wrong">0</strong><span>incorrectas</span></article>
+              <article><strong id="result-time">00:00</strong><span>tiempo</span></article>
+            </div>
+          </div>
+
+          <section class="panel class-results-panel">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Diagnóstico</span><h2>Resultado por clase</h2></div>
+            </div>
+            <div id="class-results" class="class-results"></div>
+          </section>
+
+          <section class="panel review-panel" id="review-panel">
+            <div class="section-heading compact">
+              <div><span class="eyebrow">Aprendizaje</span><h2>Errores que debes revisar</h2></div>
+            </div>
+            <div id="mistake-list" class="mistake-list"></div>
+          </section>
+
+          <div class="result-actions">
+            <button class="button secondary" id="results-home" type="button">
+              <i data-lucide="house"></i> Volver al inicio
+            </button>
+            <button class="button primary" id="retry-mistakes" type="button">
+              <i data-lucide="rotate-ccw"></i> Repetir errores
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <dialog class="modal" id="progress-modal">
+        <div class="modal-header">
+          <div><span class="eyebrow">Seguimiento local</span><h2>Tu progreso</h2></div>
+          <button class="icon-button close-modal" type="button" aria-label="Cerrar"><i data-lucide="x"></i></button>
+        </div>
+        <div id="progress-details" class="progress-details"></div>
+      </dialog>
+
+      <dialog class="modal" id="settings-modal">
+        <div class="modal-header">
+          <div><span class="eyebrow">Datos locales</span><h2>Opciones</h2></div>
+          <button class="icon-button close-modal" type="button" aria-label="Cerrar"><i data-lucide="x"></i></button>
+        </div>
+        <p>El progreso se guarda únicamente en este navegador.</p>
+        <button class="button danger" id="reset-progress" type="button">
+          <i data-lucide="trash-2"></i> Borrar todo el progreso
+        </button>
+      </dialog>
+
+      <dialog class="modal confirmation-modal" id="exit-modal">
+        <div class="modal-header">
+          <div><span class="eyebrow">Intento en curso</span><h2>¿Salir de la prueba?</h2></div>
+          <button class="icon-button close-modal" type="button" aria-label="Cerrar"><i data-lucide="x"></i></button>
+        </div>
+        <p>Tu avance quedará guardado para continuarlo después.</p>
+        <div class="modal-actions">
+          <button class="button secondary close-modal" type="button">Seguir practicando</button>
+          <button class="button primary" id="confirm-exit" type="button">Guardar y salir</button>
+        </div>
+      </dialog>
+
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+
+    <script src="https://unpkg.com/lucide@1.48.0/dist/umd/lucide.min.js"></script>
+    <script src="questions.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
